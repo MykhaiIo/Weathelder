@@ -14,7 +14,7 @@
 		D90A91702269C9010093E718 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D90A916E2269C9010093E718 /* Main.storyboard */; };
 		D90A91722269C9050093E718 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D90A91712269C9050093E718 /* Assets.xcassets */; };
 		D90A91752269C9050093E718 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D90A91732269C9050093E718 /* LaunchScreen.storyboard */; };
-		D9284CBF227F578600E11FC8 /* ForecastTableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9284CBD227F578600E11FC8 /* ForecastTableTableViewController.swift */; };
+		D9284CBF227F578600E11FC8 /* ForecastTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9284CBD227F578600E11FC8 /* ForecastTableViewController.swift */; };
 		D9284CC0227F578600E11FC8 /* ForecastTableTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9284CBE227F578600E11FC8 /* ForecastTableTableViewController.xib */; };
 		D9CB8A682294039100004A83 /* OpenWeatherMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9CB8A672294039100004A83 /* OpenWeatherMap.swift */; };
 /* End PBXBuildFile section */
@@ -31,7 +31,7 @@
 		D90A91712269C9050093E718 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D90A91742269C9050093E718 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D90A91762269C9050093E718 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D9284CBD227F578600E11FC8 /* ForecastTableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableTableViewController.swift; sourceTree = "<group>"; };
+		D9284CBD227F578600E11FC8 /* ForecastTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableViewController.swift; sourceTree = "<group>"; };
 		D9284CBE227F578600E11FC8 /* ForecastTableTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForecastTableTableViewController.xib; sourceTree = "<group>"; };
 		D9CB8A672294039100004A83 /* OpenWeatherMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenWeatherMap.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -80,7 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				D90A916A2269C9010093E718 /* AppDelegate.swift */,
-				D9284CBD227F578600E11FC8 /* ForecastTableTableViewController.swift */,
+				D9284CBD227F578600E11FC8 /* ForecastTableViewController.swift */,
 				D90A916C2269C9010093E718 /* WeatherViewController.swift */,
 				D9CB8A672294039100004A83 /* OpenWeatherMap.swift */,
 				D90A916E2269C9010093E718 /* Main.storyboard */,
@@ -229,7 +229,7 @@
 				D9CB8A682294039100004A83 /* OpenWeatherMap.swift in Sources */,
 				D90A916D2269C9010093E718 /* WeatherViewController.swift in Sources */,
 				D90A916B2269C9010093E718 /* AppDelegate.swift in Sources */,
-				D9284CBF227F578600E11FC8 /* ForecastTableTableViewController.swift in Sources */,
+				D9284CBF227F578600E11FC8 /* ForecastTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

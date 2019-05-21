@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import CoreLocation
+import MBProgressHUD
 
 class ForecastTableViewCell: UITableViewCell {
     
@@ -61,6 +62,7 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
     
     let openWeather = OpenWeatherMap()
     let locManager = CLLocationManager()
+    let hud         = MBProgressHUD()
     
     //var forecastData = Array<(datetime : String, descr : String, icon : UIImage, maxTemp : String, minTemp : String)>()
     
@@ -71,7 +73,6 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
             self.openWeather.delegate  = self
             self.tableView.delegate = self
             self.tableView.dataSource = self
-            self.tableView.reloadData()
         }
         
         self.openWeather.delegate  = self
@@ -87,8 +88,16 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    func activityIndicator() {
+        hud.label.text = "Loading..."
+        hud.dimBackground = true
+        self.view.addSubview(hud)
+        hud.show(animated: true)
+    }
    
     func updateWeatherInfo(weatherJson: JSON) {
+        hud.hide(animated: true)
         for index in 0...35 {
             if weatherJson["list"][index]["main"]["temp"].float != nil {
                 let country = weatherJson["city"]["country"].stringValue
@@ -116,6 +125,7 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
                 let icon = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime, index: index)
                 
                 self.openWeather.forecastData += [(forecastTime, description, icon, maxTempConverted, minTempConverted)] as [(datetime: String, descr: String, icon: UIImage, maxTemp: String, minTemp: String)]
+                tableView.reloadData()
             }
         }
     }
@@ -203,6 +213,8 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print(manager.location!)
+        
+        self.activityIndicator()
         
         let curLocation = locations.last as! CLLocation
         
