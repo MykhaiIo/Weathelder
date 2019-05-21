@@ -67,6 +67,13 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        DispatchQueue.main.async {
+            self.openWeather.delegate  = self
+            self.tableView.delegate = self
+            self.tableView.dataSource = self
+            self.tableView.reloadData()
+        }
+        
         self.openWeather.delegate  = self
         
         locManager.delegate = self
@@ -82,35 +89,33 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
     }
    
     func updateWeatherInfo(weatherJson: JSON) {
-        if weatherJson["list"][0]["main"]["temp"].float != nil {
-            for index in 0...35 {
-                if weatherJson["list"][index]["main"]["temp"].float != nil {
-                    let country = weatherJson["city"]["country"].stringValue
-                    // get convenient temperature
-                    let minTemp = weatherJson["list"][index]["main"]["temp_min"].floatValue
-                    
-                    let minTempConverted = openWeather.convertTemperature(country: country, temp: minTemp)
-                    
-                    let maxTemp = weatherJson["list"][index]["main"]["temp_max"].floatValue
-                    
-                    let maxTempConverted = openWeather.convertTemperature(country: country, temp: maxTemp)
-                    
-                    // get forecast time
-                    let forecastTime = weatherJson["list"][index]["dt_txt"].stringValue
-                    print(forecastTime)
-                    
-                    let description = weatherJson["list"][index]["weather"][0]["description"].stringValue
-                    
-                    let cond = weatherJson["list"][index]["weather"][0]["id"].intValue
-                   
-                    let strIcon = weatherJson["list"][index]["weather"][0]["icon"].stringValue
-                    
-                    let dayTime = openWeather.isDayTime(icon: strIcon)
-                    
-                    let icon = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime, index: index)
-                    
-                    self.openWeather.forecastData += [(forecastTime, description, icon, maxTempConverted, minTempConverted)] as [(datetime: String, descr: String, icon: UIImage, maxTemp: String, minTemp: String)]
-                }
+        for index in 0...35 {
+            if weatherJson["list"][index]["main"]["temp"].float != nil {
+                let country = weatherJson["city"]["country"].stringValue
+                // get convenient temperature
+                let minTemp = weatherJson["list"][index]["main"]["temp_min"].floatValue
+                
+                let minTempConverted = openWeather.convertTemperature(country: country, temp: minTemp)
+                
+                let maxTemp = weatherJson["list"][index]["main"]["temp_max"].floatValue
+                
+                let maxTempConverted = openWeather.convertTemperature(country: country, temp: maxTemp)
+                
+                // get forecast time
+                let forecastTime = weatherJson["list"][index]["dt_txt"].stringValue
+                print(forecastTime)
+                
+                let description = weatherJson["list"][index]["weather"][0]["description"].stringValue
+                
+                let cond = weatherJson["list"][index]["weather"][0]["id"].intValue
+                
+                let strIcon = weatherJson["list"][index]["weather"][0]["icon"].stringValue
+                
+                let dayTime = openWeather.isDayTime(icon: strIcon)
+                
+                let icon = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime, index: index)
+                
+                self.openWeather.forecastData += [(forecastTime, description, icon, maxTempConverted, minTempConverted)] as [(datetime: String, descr: String, icon: UIImage, maxTemp: String, minTemp: String)]
             }
         }
     }
