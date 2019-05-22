@@ -31,7 +31,7 @@ class OpenWeatherMap {
     var delegate: OpenWeatherMapDelegate!
 
     func setRequest(sourceURL : URLConvertible) {
-        request(sourceURL).responseJSON{
+        request(sourceURL).responseJSON {
             (response) in
 
             if response.data != nil {

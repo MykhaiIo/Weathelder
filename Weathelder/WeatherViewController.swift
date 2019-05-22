@@ -14,9 +14,9 @@ import CoreLocation
 
 class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManagerDelegate {
 
-    let openWeather = OpenWeatherMap()
-    let hud         = MBProgressHUD()
-    let locManager  = CLLocationManager()
+    let openWeather            = OpenWeatherMap()
+    let hud                    = MBProgressHUD()
+    let locManager             = CLLocationManager()
 
     @IBOutlet weak var weatherIcon: UIImageView!
     @IBOutlet weak var lLocation: UIButton!
@@ -31,16 +31,16 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
     @IBAction func bLocationTapped(_ sender: UIButton) {
         displayCity()
     }
-    
+
     var cityName : String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
     self.openWeather.delegate  = self
-        
-        locManager.delegate = self
-        
+
+    locManager.delegate        = self
+
     locManager.desiredAccuracy = kCLLocationAccuracyBest
     locManager.requestWhenInUseAuthorization()
     locManager.startUpdatingLocation()
@@ -182,8 +182,25 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
                 forecastController.cityName = self.cityName
             } else {
                 let networkController = UIAlertController(title: "Error", message: "You should enter city name", preferredStyle: UIAlertController.Style.alert)
-                let ok = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
-                networkController.addAction(ok)
+                let okAction        = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                    (action) -> Void in
+                    
+                    let  cityField      = networkController.textFields![0]
+                    //            let countryField = alertController.textFields![1]
+                    
+                    if cityField == networkController.textFields?.first as UITextField? /*&& countryField == alertController.textFields?.first as UITextField? */ {
+                        self.activityIndicator()
+                        self.cityName = cityField.text
+                        self.openWeather.getWeatherFor(city: cityField.text!)
+                    }
+                }
+                
+                networkController.addAction(okAction)
+                
+                networkController.addTextField { (cityField) -> Void in
+                    cityField.placeholder = "City name"
+                }
+                
                 self.present(networkController, animated: true, completion: nil)
             }
         }
