@@ -178,8 +178,8 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
         if segue.identifier == "showForecastTable" {
             hud.hide(animated: true)
             let forecastController = segue.destination as! ForecastTableViewController
-            if forecastController.cityName != nil {
-                forecastController.cityName! = self.cityName
+            if self.cityName != nil {
+                forecastController.cityName = self.cityName
             } else {
                 let networkController = UIAlertController(title: "Error", message: "You should enter city name", preferredStyle: UIAlertController.Style.alert)
                 let ok = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
