@@ -21,64 +21,26 @@ class ForecastTableViewCell: UITableViewCell {
     @IBOutlet weak var lTempMin: UILabel!
 }
 
-class ArrayRef<Element>:CustomStringConvertible
-{
-    var array:[Element]=[]
-    
-    init()               {}
-    init(Type:Element.Type)    {}
-    init(fromArray:[Element])  { array = fromArray }
-    init(_ values:Element ...) { array = values }
-    
-    var count:Int { return array.count }
-    
-    // allow use of subscripts to manipulate elements
-    subscript (index:Int) -> Element
-    {
-        get { return array[index] }
-        set { array[index] = newValue }
-    }
-    
-    // allow short syntax to access array content
-    // example:   myArrayRef[].map({ $0 + "*" })
-    subscript () -> [Element]
-    {
-        get { return array }
-        set { array = newValue }
-    }
-    
-    // allow printing the array example:  print(myArrayRef)
-    var description:String { return "\(array)" }
-    
-    // delegate append method to internal array
-    func append(newElement: Element)
-    { array.append(newElement) }
-    
-    // add more delegation to array methods as needed ...
-}
-
 class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate, CLLocationManagerDelegate {
-  
     
     let openWeather = OpenWeatherMap()
-    let locManager = CLLocationManager()
+    let locManager  = CLLocationManager()
     let hud         = MBProgressHUD()
     
-    //var forecastData = Array<(datetime : String, descr : String, icon : UIImage, maxTemp : String, minTemp : String)>()
+    var cityName: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        DispatchQueue.main.async {
-            self.openWeather.delegate  = self
-            self.tableView.delegate = self
-            self.tableView.dataSource = self
-        }
+//        DispatchQueue.main.async {
+//            self.tableView.delegate = self
+//            self.tableView.dataSource = self
+//        }
         
         self.openWeather.delegate  = self
-        
-        locManager.delegate = self
-        
+        locManager.delegate        = self
+        self.activityIndicator()
+
         locManager.desiredAccuracy = kCLLocationAccuracyBest
         locManager.requestWhenInUseAuthorization()
         locManager.startUpdatingLocation()
@@ -87,6 +49,10 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        //self.openWeather.getForecastFor(city: self.openWeather.cityName!)
+        
+        openWeather.getForecastFor(city: self.cityName)
     }
     
     func activityIndicator() {
@@ -95,36 +61,39 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
         self.view.addSubview(hud)
         hud.show(animated: true)
     }
+    
+    
    
     func updateWeatherInfo(weatherJson: JSON) {
+        
         hud.hide(animated: true)
         for index in 0...35 {
             if weatherJson["list"][index]["main"]["temp"].float != nil {
-                let country = weatherJson["city"]["country"].stringValue
+                let country              = weatherJson["city"]["country"].stringValue
                 // get convenient temperature
-                let minTemp = weatherJson["list"][index]["main"]["temp_min"].floatValue
-                
-                let minTempConverted = openWeather.convertTemperature(country: country, temp: minTemp)
-                
-                let maxTemp = weatherJson["list"][index]["main"]["temp_max"].floatValue
-                
-                let maxTempConverted = openWeather.convertTemperature(country: country, temp: maxTemp)
-                
+                let minTemp              = weatherJson["list"][index]["main"]["temp_min"].floatValue
+
+                let minTempConverted     = openWeather.convertTemperature(country: country, temp: minTemp)
+
+                let maxTemp              = weatherJson["list"][index]["main"]["temp_max"].floatValue
+
+                let maxTempConverted     = openWeather.convertTemperature(country: country, temp: maxTemp)
+
                 // get forecast time
-                let forecastTime = weatherJson["list"][index]["dt_txt"].stringValue
+                let forecastTime         = weatherJson["list"][index]["dt_txt"].stringValue
                 print(forecastTime)
-                
-                let description = weatherJson["list"][index]["weather"][0]["description"].stringValue
-                
-                let cond = weatherJson["list"][index]["weather"][0]["id"].intValue
-                
-                let strIcon = weatherJson["list"][index]["weather"][0]["icon"].stringValue
-                
-                let dayTime = openWeather.isDayTime(icon: strIcon)
-                
-                let icon = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime, index: index)
-                
-                self.openWeather.forecastData += [(forecastTime, description, icon, maxTempConverted, minTempConverted)] as [(datetime: String, descr: String, icon: UIImage, maxTemp: String, minTemp: String)]
+
+                let description          = weatherJson["list"][index]["weather"][0]["description"].stringValue
+
+                let cond                 = weatherJson["list"][index]["weather"][0]["id"].intValue
+
+                let strIcon              = weatherJson["list"][index]["weather"][0]["icon"].stringValue
+
+                let dayTime              = openWeather.isDayTime(icon: strIcon)
+
+                let icon                 = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime, index: index)
+
+                openWeather.forecastData += [(forecastTime, description, icon, maxTempConverted, minTempConverted)] as [(datetime: String, descr: String, icon: UIImage, maxTemp: String, minTemp: String)]
                 tableView.reloadData()
             }
         }
@@ -146,13 +115,13 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return self.openWeather.forecastData.count
+        return openWeather.forecastData.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell               = tableView.dequeueReusableCell(withIdentifier: "cellTypeIdentifier", for: indexPath) as! ForecastTableViewCell
-        let forecastCell       = self.openWeather.forecastData[indexPath.row]
+        let forecastCell       = openWeather.forecastData[indexPath.row]
 
         cell.lDescription.text = forecastCell.descr
         cell.lTempMax.text     = forecastCell.maxTemp
@@ -223,7 +192,7 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
             locManager.startUpdatingLocation()
             
             let coords = CLLocationCoordinate2DMake(curLocation.coordinate.latitude, curLocation.coordinate.longitude)
-            self.openWeather.getForecastFor(location: coords)
+            openWeather.getForecastFor(location: coords)
             print(coords)
         }
     }
@@ -232,4 +201,5 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
         print(error)
         print("Can't get your location")
     }
+    
 }

@@ -31,6 +31,8 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
     @IBAction func bLocationTapped(_ sender: UIButton) {
         displayCity()
     }
+    
+    var cityName : String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,10 +62,9 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
 
             if cityField == alertController.textFields?.first as UITextField? /*&& countryField == alertController.textFields?.first as UITextField? */ {
                 self.activityIndicator()
+                self.cityName = cityField.text
                 self.openWeather.getWeatherFor(city: cityField.text!)
-                self.openWeather.cityName = cityField.text
             }
-
         }
         
         alertController.addAction(okAction)
@@ -104,6 +105,9 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
             // get city name
 
         let cityName           = weatherJson["name"].stringValue
+        self.cityName = cityName
+            print(self.cityName!)
+            print(cityName)
         self.lLocation.setTitle("\(cityName), \(country)", for: UIControl.State.normal)
 
             // get pressure
@@ -123,10 +127,6 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
         let strIcon            = weather["icon"].stringValue
         let dayTime            = openWeather.isDayTime(icon: strIcon)
         let icon               = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime, index: 0)
-            print(cityName)
-            print(temp)
-            print(cond)
-            print(dayTime)
         self.weatherIcon.image  = icon
 
             // get description
@@ -172,5 +172,20 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
         print("Can't get your location")
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showForecastTable" {
+            hud.hide(animated: true)
+            let forecastController = segue.destination as! ForecastTableViewController
+            if forecastController.cityName != nil {
+                forecastController.cityName! = self.cityName
+            } else {
+                let networkController = UIAlertController(title: "Error", message: "You should enter city name", preferredStyle: UIAlertController.Style.alert)
+                let ok = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
+                networkController.addAction(ok)
+                self.present(networkController, animated: true, completion: nil)
+            }
+        }
     }
 }
