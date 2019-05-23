@@ -31,33 +31,99 @@ class WeathelderUITests: XCTestCase {
         
         let label = app.staticTexts["Description"]
         
-        if (label.waitForExistence(timeout: 4)) {
+        if (label.waitForExistence(timeout: 2)) {
             XCTAssertEqual(label.exists, true, "should be shown")
         } else { XCTFail() }
     }
     
-    func testNavigation() {
-        let label = app.staticTexts["Description"]
+    func testNavigationWithUndefinedLocation() {
+        let forecast = app.navigationBars.buttons["Forecast"]
         
-        if (label.waitForExistence(timeout: 4)) {
+        if (forecast.waitForExistence(timeout: 2)) {
+            forecast.tap()
+        } else { XCTFail() }
+        
+        app.alerts.textFields.element.typeText("Kharkiv")
+        app.alerts.buttons["OK"].tap()
+        
+        if (forecast.waitForExistence(timeout: 2)) {
+            forecast.tap()
+        } else { XCTFail() }
+        
+        let cell = app.tables.element(boundBy: 0).cells.element(boundBy: 0)
+        
+        if cell.waitForExistence(timeout: 2) {
+
+            let datetime    = cell.staticTexts["2019-05-23 18:00:00"]
+            let description = cell.staticTexts["scattered clouds"]
+            let imaegView   = cell.images.element(boundBy: 0)
+
+            XCTAssertEqual(datetime.exists, true, "should be shown")
+            XCTAssertEqual(description.exists, true, "should be shown")
+            XCTAssertEqual(imaegView.exists, true, "should be shown")
+        } else {
+            XCTFail()
+        }
+    }
+    
+    func testNavigationWithSpecifiedLocation() {
+        let location = app.buttons["City, Country"]
+        
+        if (location.waitForExistence(timeout: 2)) {
+            location.tap()
+        } else { XCTFail() }
+        
+        app.alerts.textFields.element.typeText("Kharkiv")
+        app.alerts.buttons["OK"].tap()
+        
+        let forecast = app.navigationBars.buttons["Forecast"]
+        
+        if (forecast.waitForExistence(timeout: 2)) {
+            forecast.tap()
+        } else { XCTFail() }
+        
+        let cell = app.tables.element(boundBy: 0).cells.element(boundBy: 0)
+        
+        if cell.waitForExistence(timeout: 2) {
+            
+            let datetime    = cell.staticTexts["2019-05-23 18:00:00"]
+            let description = cell.staticTexts["scattered clouds"]
+            let imaegView   = cell.images.element(boundBy: 0)
+            
+            XCTAssertEqual(datetime.exists, true, "should be shown")
+            XCTAssertEqual(description.exists, true, "should be shown")
+            XCTAssertEqual(imaegView.exists, true, "should be shown")
+        } else {
+            XCTFail()
+        }
+    }
+    
+    func testNavigationWithFictiveLocation() {
+        let location = app.buttons["City, Country"]
+        
+        if (location.waitForExistence(timeout: 2)) {
+            location.tap()
+        } else { XCTFail() }
+        
+        app.alerts.textFields.element.typeText("jkbf ytfytuyddfdst")
+        app.alerts.buttons["OK"].tap()
+        
+        let forecast = app.navigationBars.buttons["Forecast"]
+        
+        if (forecast.waitForExistence(timeout: 2)) {
+            forecast.tap()
+        } else { XCTFail() }
+        
+        let back = app.navigationBars.buttons["Back"]
+        
+        if (back.waitForExistence(timeout: 2)) {
+            back.tap()
+        } else { XCTFail() }
+        
+        let label = app.staticTexts["Temp"]
+        
+        if (label.waitForExistence(timeout: 2)) {
             XCTAssertEqual(label.exists, true, "should be shown")
         } else { XCTFail() }
-        
-        let newScreen = app.tables.element(boundBy: 0)
-        
-        if (newScreen.waitForExistence(timeout: 4)) {
-            
-            let cell = app.tables.element(boundBy: 0).cells.element(boundBy: 0)
-            
-            let title = cell.staticTexts["DateTime"]
-            let descr = cell.staticTexts["Description"]
-            let imgView = cell.images.element(boundBy: 0)
-            
-            XCTAssertEqual(title.exists, true, "should be shown")
-            XCTAssertEqual(descr.exists, true, "should be shown")
-            XCTAssertEqual(imgView.exists, true, "should be shown")
-            
-        } else { XCTFail() }
     }
-
 }
