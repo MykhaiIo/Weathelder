@@ -18,10 +18,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eig-dU-zZa">
-                                <rect key="frame" x="64" y="591" width="287" height="103"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_image" translatesAutoresizingMaskIntoConstraints="NO" id="G7o-sZ-GFb">
+                                <rect key="frame" x="79" y="225" width="256" height="256"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="103" id="haK-qE-prJ"/>
+                                    <constraint firstAttribute="height" constant="256" id="eQ8-64-Yac"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="siR-GB-VaA">
+                                <rect key="frame" x="63.5" y="608" width="287" height="103"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="103" id="WLM-U6-MOU"/>
                                 </constraints>
                                 <attributedString key="attributedText">
                                     <fragment content="Weathelder">
@@ -34,16 +40,14 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="launch_image" highlightedImage="launch_image" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1yd-Jy-Pgb">
-                                <rect key="frame" x="107" y="221" width="200" height="200"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.56904578210000001" blue="0.57461684940000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Eig-dU-zZa" firstAttribute="centerX" secondItem="1yd-Jy-Pgb" secondAttribute="centerX" id="Twq-sZ-ssB"/>
-                            <constraint firstItem="Eig-dU-zZa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="64" id="bwR-cm-wZC"/>
-                            <constraint firstItem="Eig-dU-zZa" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="gcZ-jb-1U4"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Eig-dU-zZa" secondAttribute="bottom" constant="168" id="iwG-RJ-XkG"/>
+                            <constraint firstItem="G7o-sZ-GFb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="79" id="IDt-nt-gpn"/>
+                            <constraint firstItem="G7o-sZ-GFb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="181" id="Mjg-WN-fdd"/>
+                            <constraint firstItem="siR-GB-VaA" firstAttribute="centerX" secondItem="G7o-sZ-GFb" secondAttribute="centerX" id="RgA-QZ-hqp"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="siR-GB-VaA" secondAttribute="bottom" constant="151" id="SVc-sj-jpx"/>
+                            <constraint firstItem="siR-GB-VaA" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="oDi-In-xSu"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

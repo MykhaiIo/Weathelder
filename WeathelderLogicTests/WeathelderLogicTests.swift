@@ -16,7 +16,7 @@ class WeathelderLogicTests: XCTestCase {
 
     private let owm = OpenWeatherMap()
     
-    func testParseJsonWithoutExpectedValues() {
+    func testCellExists() {
         
     }
 }
