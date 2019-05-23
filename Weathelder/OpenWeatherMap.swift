@@ -37,9 +37,9 @@ class OpenWeatherMap {
 
             if response.data != nil {
                 do {
-                    let weatherJson = try JSON(data: response.data!)
+                    let weatherJSON = try JSON(data: response.data!)
                     DispatchQueue.main.async {
-                        self.delegate.updateWeatherInfo(weatherJson: weatherJson)
+                        self.delegate.updateWeatherInfo(weatherJson: weatherJSON)
                     }
                 } catch let error {
                     self.delegate.failure()
@@ -80,7 +80,7 @@ class OpenWeatherMap {
         return dateFormatter.string(from: weatherDate)
     }
 
-    func getWeatherIcon(cond: Int, dayTime: Bool, index: Int) -> UIImage {
+    func getWeatherIcon(cond: Int, dayTime: Bool) -> UIImage {
         var imgName: String
         switch (cond, dayTime) {
         // thunderstorm
@@ -144,13 +144,14 @@ class OpenWeatherMap {
         return String(Int(pres/1.333)) + " mmhg"
     }
     
+    
     func convertTemperature(country: String, temp: Float) -> String {
         if (country == "US") {
             //convert to Farenheit
-            return String(Int((temp - 273.15) * 1.8 + 32)) + " °F"
+            return String(Int(roundf((temp - 273.15) * 1.8 + 32))) + " °F"
         } else {
             //convert to Celsium
-            return String(Int(temp - 273.15)) + " °C"
+            return String(Int(roundf(temp - 273.15))) + " °C"
         }
     }
     
@@ -158,18 +159,5 @@ class OpenWeatherMap {
     func isDayTime(icon: String) -> Bool {
         return icon.range(of: "d") != nil
     }
-    
-    
-//    func isDayTime(weatherJson: JSON) -> Bool {
-//        var dayTime = false
-//        let curTime = Date().timeIntervalSince1970
-//        let sunrise = weatherJson["sys"]["sunrise"].doubleValue
-//        let sunset  = weatherJson["sys"]["sunset"].doubleValue
-//
-//        if (curTime > sunrise && curTime < sunset) {
-//        dayTime     = true
-//        }
-//        return dayTime
-//    }
 }
 

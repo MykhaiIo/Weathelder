@@ -95,7 +95,7 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
 
                 let dayTime              = openWeather.isDayTime(icon: strIcon)
 
-                let icon                 = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime, index: index)
+                let icon                 = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime)
 
                 openWeather.forecastData += [(forecastTime, description, location, icon, maxTempConverted, minTempConverted)] as [(datetime: String, descr: String, location: String, icon: UIImage, maxTemp: String, minTemp: String)]
                 tableView.reloadData()

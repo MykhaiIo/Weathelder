@@ -130,7 +130,7 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
         let cond               = weather["id"].intValue
         let strIcon            = weather["icon"].stringValue
         let dayTime            = openWeather.isDayTime(icon: strIcon)
-        let icon               = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime, index: 0)
+        let icon               = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime)
         self.weatherIcon.image  = icon
 
             // get description

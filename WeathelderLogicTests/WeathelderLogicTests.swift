@@ -15,15 +15,21 @@ import XCTest
 class WeathelderLogicTests: XCTestCase {
 
     private let owm = OpenWeatherMap()
+//    private let ftvc = ForecastTableViewController()
+//    private let wvc = WeatherViewController()
     
-    func testWeatherForCity() {
-        owm.getWeatherFor(city: "Kharkiv")
-        XCTAssertEqual(owm.weatherData!.location, "Kharkiv, UA", "should be equal")
+    func testConvertTemperature() {
+        var temperature = owm.convertTemperature(country: "US", temp: 289)
+        XCTAssertEqual(temperature, "61 °F", "should be equal")
+        temperature = owm.convertTemperature(country: "UA", temp: 280)
+        XCTAssertEqual(temperature, "7 °C", "should be equal")
     }
     
-    func testForecastForCity() {
-        owm.getForecastFor(city: "Kharkiv")
-        XCTAssertEqual(owm.forecastData[0].location, "Kharkiv, UA", "should be equal")
+    func testIsDayTime() {
+        var isDayTime = owm.isDayTime(icon: "04n")
+        XCTAssertEqual(isDayTime, false, "should be equal")
+        isDayTime = owm.isDayTime(icon: "50d")
+        XCTAssertEqual(isDayTime, true, "should be equal")
     }
 }
 
