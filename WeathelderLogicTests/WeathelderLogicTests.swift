@@ -16,8 +16,14 @@ class WeathelderLogicTests: XCTestCase {
 
     private let owm = OpenWeatherMap()
     
-    func testCellExists() {
-        
+    func testWeatherForCity() {
+        owm.getWeatherFor(city: "Kharkiv")
+        XCTAssertEqual(owm.weatherData!.location, "Kharkiv, UA", "should be equal")
+    }
+    
+    func testForecastForCity() {
+        owm.getForecastFor(city: "Kharkiv")
+        XCTAssertEqual(owm.forecastData[0].location, "Kharkiv, UA", "should be equal")
     }
 }
 

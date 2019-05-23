@@ -91,6 +91,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.0" green="0.56904578210000001" blue="0.57461684940000002" alpha="0.82943600171232879" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
                                 <connections>
                                     <outlet property="icon" destination="ROX-4T-nzX" id="cCD-18-wJd"/>
                                     <outlet property="lDateTime" destination="RGA-rv-XnY" id="u78-cb-hC8"/>
@@ -119,7 +120,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" distribution="fillEqually" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="dbB-Uz-0bu">
-                                <rect key="frame" x="91.999999999999986" y="88" width="231.66666666666666" height="838"/>
+                                <rect key="frame" x="92" y="88" width="231.66666666666666" height="838"/>
                                 <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ioj-aJ-Jld">

@@ -19,8 +19,9 @@ protocol OpenWeatherMapDelegate {
 }
 
 class OpenWeatherMap {
-    var forecastData: Array<(datetime : String, descr : String, icon : UIImage, maxTemp : String, minTemp : String)> = []
-    var cityName: String?
+    var forecastData: Array<(datetime : String, descr : String, location : String, icon : UIImage, maxTemp : String, minTemp : String)> = []
+    
+    var weatherData: (descr : String, location: String, icon : UIImage, temp : String, pressure : String, humidity : String)? = nil
 
 
     let weatherSourceURL  = "https://api.openweathermap.org/data/2.5/weather"

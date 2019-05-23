@@ -24,10 +24,13 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
     @IBOutlet weak var lHumidity: UILabel!
     @IBOutlet weak var lWeatherDescr: UILabel!
     @IBOutlet weak var lTemperature: UILabel!
+    
     @IBAction func bRefresh(_ sender: UIButton) {
-//        updateWeatherInfo(weatherJson: JSON)
-        hud.hide(animated: true)
+        if (self.cityName != nil) {
+            self.openWeather.getWeatherFor(city: cityName)
+        }
     }
+    
     @IBAction func bLocationTapped(_ sender: UIButton) {
         displayCity()
     }
@@ -109,6 +112,7 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
             print(self.cityName!)
             print(cityName)
         self.lLocation.setTitle("\(cityName), \(country)", for: UIControl.State.normal)
+            let location = "\(cityName), \(country)"
 
             // get pressure
         let weather            = weatherJson["weather"][0]
@@ -134,6 +138,8 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
         let description         = weather["description"].stringValue
         self.lWeatherDescr.text = "\(description)"
             
+          openWeather.weatherData = (description, location, icon, temp, pressure, String(humidity)) as (descr : String, location: String, icon : UIImage, temp : String, pressure : String, humidity : String)
+            
             
 
         } else {
@@ -143,6 +149,7 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
     
     func failure() {
         // no internet connection
+        hud.hide(animated: true)
         let networkController = UIAlertController(title: "Error", message: "Can't load weather data", preferredStyle: UIAlertController.Style.alert)
         let ok = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
         networkController.addAction(ok)

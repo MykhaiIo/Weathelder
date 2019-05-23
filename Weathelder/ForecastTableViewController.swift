@@ -65,11 +65,15 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
     
    
     func updateWeatherInfo(weatherJson: JSON) {
-        
+
         hud.hide(animated: true)
         for index in 0...35 {
             if weatherJson["list"][index]["main"]["temp"].float != nil {
                 let country              = weatherJson["city"]["country"].stringValue
+
+                let city                 = weatherJson["city"]["name"].stringValue
+                
+                let location = "\(city), \(country)"
                 // get convenient temperature
                 let minTemp              = weatherJson["list"][index]["main"]["temp_min"].floatValue
 
@@ -93,7 +97,7 @@ class ForecastTableViewController: UITableViewController, OpenWeatherMapDelegate
 
                 let icon                 = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime, index: index)
 
-                openWeather.forecastData += [(forecastTime, description, icon, maxTempConverted, minTempConverted)] as [(datetime: String, descr: String, icon: UIImage, maxTemp: String, minTemp: String)]
+                openWeather.forecastData += [(forecastTime, description, location, icon, maxTempConverted, minTempConverted)] as [(datetime: String, descr: String, location: String, icon: UIImage, maxTemp: String, minTemp: String)]
                 tableView.reloadData()
             }
         }
