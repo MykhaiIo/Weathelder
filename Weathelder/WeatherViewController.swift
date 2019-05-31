@@ -17,6 +17,7 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
     let openWeather            = OpenWeatherMap()
     let hud                    = MBProgressHUD()
     let locManager             = CLLocationManager()
+    let defaults               = UserDefaults.standard
 
     @IBOutlet weak var weatherIcon: UIImageView!
     @IBOutlet weak var lLocation: UIButton!
@@ -24,13 +25,28 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
     @IBOutlet weak var lHumidity: UILabel!
     @IBOutlet weak var lWeatherDescr: UILabel!
     @IBOutlet weak var lTemperature: UILabel!
-    
+
     @IBAction func bRefresh(_ sender: UIButton) {
         if (self.cityName != nil) {
             self.openWeather.getWeatherFor(city: cityName)
+        } else {
+            let description         = defaults.string(forKey: "descr")
+            let location            = defaults.string(forKey: "loc")
+            let cond                = defaults.integer(forKey: "cond")
+            let isDayTime           = defaults.bool(forKey: "isDT")
+            let temperature         = defaults.string(forKey: "temp")
+            let pressure            = defaults.string(forKey: "press")
+            let humidity            = defaults.string(forKey: "hum")
+
+            self.lLocation.setTitle(location, for: UIControl.State.normal)
+            self.lTemperature.text  = temperature
+            self.lWeatherDescr.text = description
+            self.lHumidity.text     = humidity
+            self.lPressure.text     = pressure
+            self.weatherIcon.image  = openWeather.getWeatherIcon(cond: cond, dayTime: isDayTime)
         }
     }
-    
+
     @IBAction func bLocationTapped(_ sender: UIButton) {
         displayCity()
     }
@@ -102,8 +118,8 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
 
             // get convenient temperature
 
-        let temp               = openWeather.convertTemperature(country: country, temp: tempResult)
-        self.lTemperature.text = "\(temp)"
+        let temperature        = openWeather.convertTemperature(country: country, temp: tempResult)
+        self.lTemperature.text = "\(temperature)"
 
             // get city name
 
@@ -127,10 +143,10 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
             // get icon
 
 
-        let cond               = weather["id"].intValue
+        let condition          = weather["id"].intValue
         let strIcon            = weather["icon"].stringValue
         let dayTime            = openWeather.isDayTime(icon: strIcon)
-        let icon               = openWeather.getWeatherIcon(cond: cond, dayTime: dayTime)
+        let icon               = openWeather.getWeatherIcon(cond: condition, dayTime: dayTime)
         self.weatherIcon.image  = icon
 
             // get description
@@ -138,7 +154,15 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
         let description         = weather["description"].stringValue
         self.lWeatherDescr.text = "\(description)"
             
-          openWeather.weatherData = (description, location, icon, temp, pressure, String(humidity)) as (descr : String, location: String, icon : UIImage, temp : String, pressure : String, humidity : String)
+        openWeather.weatherData = (description, location, icon, temperature, pressure, String(humidity)) as (descr : String, location: String, icon : UIImage, temp : String, pressure : String, humidity : String)
+            
+            defaults.set(description, forKey: "descr")
+            defaults.set(location, forKey: "loc")
+            defaults.set(condition, forKey: "cond")
+            defaults.set(dayTime, forKey: "isDT")
+            defaults.set(temperature, forKey: "temp")
+            defaults.set(pressure, forKey: "press")
+            defaults.set(String(humidity), forKey: "hum")
             
             
 
@@ -150,10 +174,24 @@ class WeatherViewController: UIViewController, OpenWeatherMapDelegate, CLLocatio
     func failure() {
         // no internet connection
         hud.hide(animated: true)
-        let networkController = UIAlertController(title: "Error", message: "Can't load weather data", preferredStyle: UIAlertController.Style.alert)
-        let ok = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
+        let networkController   = UIAlertController(title: "Error", message: "Can't load weather data", preferredStyle: UIAlertController.Style.alert)
+        let ok                  = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
         networkController.addAction(ok)
         self.present(networkController, animated: true, completion: nil)
+        let description         = defaults.string(forKey: "descr")
+        let location            = defaults.string(forKey: "loc")
+        let cond                = defaults.integer(forKey: "cond")
+        let isDayTime           = defaults.bool(forKey: "isDT")
+        let temperature         = defaults.string(forKey: "temp")
+        let pressure            = defaults.string(forKey: "press")
+        let humidity            = defaults.string(forKey: "hum")
+
+        self.lLocation.setTitle(location, for: UIControl.State.normal)
+        self.lTemperature.text  = temperature
+        self.lWeatherDescr.text = description
+        self.lHumidity.text     = humidity
+        self.lPressure.text     = pressure
+        self.weatherIcon.image = openWeather.getWeatherIcon(cond: cond, dayTime: isDayTime)
     }
     
     // MARK: CLLocationManagerDelegate

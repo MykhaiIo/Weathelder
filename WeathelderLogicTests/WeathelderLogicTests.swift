@@ -19,7 +19,7 @@ class WeathelderLogicTests: XCTestCase {
 //    private let wvc = WeatherViewController()
     
     func testConvertTemperature() {
-        var temperature = owm.convertTemperature(country: "US", temp: 289)
+        var temperature = owm.convertTemperature(country: "US", temp: 300)
         XCTAssertEqual(temperature, "61 °F", "should be equal")
         temperature = owm.convertTemperature(country: "UA", temp: 280)
         XCTAssertEqual(temperature, "7 °C", "should be equal")

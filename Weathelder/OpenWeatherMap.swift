@@ -18,6 +18,28 @@ protocol OpenWeatherMapDelegate {
     func failure()
 }
 
+struct Weather : Codable {
+    var id: String
+    var descr: String
+    var location: String
+    var temp: String
+    var pressure: String
+    var humidity: String
+    var imageName: String
+}
+
+struct Forecast : Codable {
+    var id: String
+    var datetime: String
+    var descr: String
+    var location: String
+    var maxTemp: String
+    var minTemp: String
+    var imgName: String
+}
+
+var forData: Array<Forecast>=[]
+
 class OpenWeatherMap {
     var forecastData: Array<(datetime : String, descr : String, location : String, icon : UIImage, maxTemp : String, minTemp : String)> = []
     
@@ -40,6 +62,7 @@ class OpenWeatherMap {
                     let weatherJSON = try JSON(data: response.data!)
                     DispatchQueue.main.async {
                         self.delegate.updateWeatherInfo(weatherJson: weatherJSON)
+                        var weatherData = try? JSONDecoder().decode([Weather].self, from: response.data!)
                     }
                 } catch let error {
                     self.delegate.failure()
@@ -48,6 +71,7 @@ class OpenWeatherMap {
             }
         }
     }
+    
     
         
     func getWeatherFor(city: String) {
